@@ -1,3 +1,6 @@
+include("./Point.jl")
+include("./Anchors.jl")
+
 function StepToward(source::Point, target::Point, stepSize::Float64)
     # Calculate direction vector
     dir_x = target.x - source.x
@@ -8,8 +11,8 @@ function StepToward(source::Point, target::Point, stepSize::Float64)
     if dist == 0
         return  # No movement if already at the target
     end
-    step_x = (dir_x / dist) * stepSize
-    step_y = (dir_y / dist) * stepSize
+    step_x = dir_x * stepSize
+    step_y = dir_y * stepSize
     
     # Update source position
     return (step_x, step_y)

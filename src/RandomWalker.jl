@@ -1,4 +1,4 @@
-module RandomWalker
+module JuliaRandomWalker
 
 include("Anchors.jl")
 

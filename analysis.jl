@@ -1,4 +1,4 @@
-using Structs
+using JuliaRandomWalker
 using Plots
 using Gtk
 

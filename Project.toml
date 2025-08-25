@@ -1,4 +1,4 @@
-name = "RandomWalker"
+name = "JuliaRandomWalker"
 uuid = "42e5809c-9b99-4f72-997a-d8f8ffab39c6"
 authors = ["athomas "]
 version = "0.1.0"

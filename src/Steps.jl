@@ -1,7 +1,7 @@
 # include("./Vector2.jl")
 # include("./Anchors.jl")
 
-function StepToward(source::Vector2, target::Vector2, stepSize::Float64)
+function ComputeStepToward(source::Vector2, target::Vector2, stepSize::Float64)
     # Calculate direction vector
     dir_x = target.x - source.x
     dir_y = target.y - source.y
@@ -23,50 +23,50 @@ stepSize = 0.5 # Step size for each random walk step
 anchors = GenerateAnchors(5, 1.0)
 function ComputeStepsWithBounds(n::Int64, walker::Vector2)
     # Set up default bounds #
-    max_x = walker.x
-    min_x = walker.x
-    max_y = walker.y
-    min_y = walker.y
+    upperRight = Vector2(walker.x, walker.y)
+    lowerLeft = Vector2(walker.x, walker.y)
+    # max_x = walker.x
+    # min_x = walker.x
+    # max_y = walker.y
+    # min_y = walker.y
 
     # Create our array of locations visited by our walker #
-    steps = zeros(n + 1,2)
-    steps[0,0] = walker.x
-    steps[0,1] = walker.y
-
+    steps = Array{Vector2}(undef, n + 1)
+    steps[0] = Vector2(walker.x, walker.y)
 
     # Do N steps, tracking the X/Y bounds for heatmap purposes #
     for i in 2:n+1
         # Compute the step & check the bounds #
         target = ChooseRandomAnchor(anchors)
-        stepVector = StepToward(walker, target, stepSize)
-        walker.x += stepVector[0]
-        walker.y += stepVector[1]
-        # TODO: Decide if we can trim this down to just the steps array #
-        steps[i,0] = walker.x
-        steps[i,1] = walker.y
+        stepVector = ComputeStepToward(walker, target, stepSize)
+        walker += stepVector
+        steps[i] = Vector2(walker.x, walker.y)
 
         ## Update bounds ##
         # Update X bounds #
-        if max_x < walker.x
-            max_x = walker.x
-        else 
-            if min_x > walker.x
-                min_x = walker.x
+        if upperRight.x < walker.x
+            upperRight.x = walker.x
+        else
+            if lowerLeft.x > walker.x
+                lowerLeft.x = walker.x
             end
         end
 
         # Update Y bounds #
-        if max_y < walker.y
-            max_y = walker.y
+        if upperRight.y < walker.y
+            upperRight.y = walker.y
         else 
-            if min_y > walker.y
-                max_y = walker.y
+            if lowerLeft.y > walker.y
+                lowerLeft.y = walker.y
             end
         end 
     end
 
     # We're done here. Walker has been modified.
-    # More importantly, we have an array of steps we can use
+    # Bounds are described by upperRight and lowerLeft, which need to be returned
+    # We also created an array of steps, which might need to be returned
+    # We might want to have the steps array be passed in as an argument instead
+    # TODO: Decide on return signature
     return steps
 end
 export ComputeStepsWithBounds

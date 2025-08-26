@@ -8,8 +8,6 @@ rotation = pi / 2
 
 # Create anchors with no theta offset #
 anchors = GenerateAnchors(num_anchors, distance)
-# expectedX = [2.0, 0.0, -2.0, 0.0]
-# expectedY = [0.0, 2.0, 0.0, -2.0]
 
 expectedAnchors = [
     Vector2(2.0, 0.0),

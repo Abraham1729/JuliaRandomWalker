@@ -16,7 +16,6 @@ function Base.:(==)(p1::Vector2, p2::Vector2)
     return p1.x == p2.x && p1.y == p2.y
 end
 
-# TODO: Check if this makes sense, getting errors in tests
 function Base.:*(scalar::Float64, p::Vector2)
     return Vector2(scalar * p.x, scalar * p.y)
 end

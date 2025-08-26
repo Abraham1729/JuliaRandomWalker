@@ -8,16 +8,23 @@ rotation = pi / 2
 
 # Create anchors with no theta offset #
 anchors = GenerateAnchors(num_anchors, distance)
-expectedX = [2.0, 0.0, -2.0, 0.0]
-expectedY = [0.0, 2.0, 0.0, -2.0]
+# expectedX = [2.0, 0.0, -2.0, 0.0]
+# expectedY = [0.0, 2.0, 0.0, -2.0]
+
+expectedAnchors = [
+    Vector2(2.0, 0.0),
+    Vector2(00.0, 2.0),
+    Vector2(-2.0, 0.0),
+    Vector2(0.0, -2.0)
+]
 
 # Test for unexpected state #
 for i in 1:num_anchors
     anchor = anchors[i]
-    if !isapprox(anchor.x, expectedX[i], atol=1e-9) || !isapprox(anchor.y, expectedY[i], atol=1e-9)
-        println("Warning: generated anchor for default theta does not match expectation.")
-        println("Got: ($(anchor.x), $(anchor.y))")
-        println("Expected: ($(expectedX[i]), $(expectedY[i]))")
+    if !isapprox(anchor, expectedAnchors[i])
+        println("Test 1 failed: generated anchor for default theta does not match expectation.")
+        println("Got: $anchor")
+        println("Expected: $(expectedAnchors[i])")
         println()
     end
 end
@@ -25,17 +32,20 @@ end
 
 # Create anchors with theta offset of pi/2 #
 rotatedAnchors = GenerateAnchors(num_anchors, distance, theta=rotation)
-expectedX = [0.0, -2.0, 0.0, 2.0]
-expectedY = [2.0, 0.0, -2.0, 0.0]
+expectedRotateddAnchors = [
+    Vector2(0.0, 2.0),
+    Vector2(-2.0, 0.0),
+    Vector2(0.0, -2.0),
+    Vector2(2.0, 0.0)
+]
 
 # Test for unexpected state #
 for i in 1:num_anchors
     anchor = rotatedAnchors[i]
-        if !isapprox(anchor.x, expectedX[i], atol=1e-9) || 
-            !isapprox(anchor.y, expectedY[i], atol=1e-9)
-        println("Warning: generated anchor for custom theta does not match expectation.")
-        println("Got: ($(anchor.x), $(anchor.y))")
-        println("Expected: ($(expectedX[i]), $(expectedY[i]))")
+        if !isapprox(anchor, expectedRotateddAnchors[i])
+        println("Test 2 Failed: generated anchor for default theta does not match expectation.")
+        println("Got: $anchor")
+        println("Expected: $(expectedRotatedAnchors[i])")
         println()
     end
 end

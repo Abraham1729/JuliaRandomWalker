@@ -1,7 +1,7 @@
-include("./Point.jl")
+include("./Vector2.jl")
 include("./Anchors.jl")
 
-function StepToward(source::Point, target::Point, stepSize::Float64)
+function StepToward(source::Vector2, target::Vector2, stepSize::Float64)
     # Calculate direction vector
     dir_x = target.x - source.x
     dir_y = target.y - source.y
@@ -15,12 +15,13 @@ function StepToward(source::Point, target::Point, stepSize::Float64)
     step_y = dir_y * stepSize
     
     # Update source position
-    return (step_x, step_y)
+    return Vector2(step_x, step_y)
 end
+export StepToward
 
 stepSize = 0.5 # Step size for each random walk step
 anchors = GenerateAnchors(5, 1.0)
-function ComputeStepsWithBounds(n::Int64, walker::Point)
+function ComputeStepsWithBounds(n::Int64, walker::Vector2)
     # Set up default bounds #
     max_x = walker.x
     min_x = walker.x
@@ -68,3 +69,4 @@ function ComputeStepsWithBounds(n::Int64, walker::Point)
     # More importantly, we have an array of steps we can use
     return steps
 end
+export ComputeStepsWithBounds

@@ -1,4 +1,4 @@
-include("Vector2.jl")
+# include("Vector2.jl")
 
 function GenerateAnchors(n::Int, distance::Float64; theta = 0.0)
     # Loop to create anchors

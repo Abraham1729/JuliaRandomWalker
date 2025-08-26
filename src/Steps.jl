@@ -1,5 +1,5 @@
-include("./Vector2.jl")
-include("./Anchors.jl")
+# include("./Vector2.jl")
+# include("./Anchors.jl")
 
 function StepToward(source::Vector2, target::Vector2, stepSize::Float64)
     # Calculate direction vector

@@ -19,16 +19,10 @@ function ComputeStepToward(source::Vector2, target::Vector2, stepSize::Float64)
 end
 export StepToward
 
-stepSize = 0.5 # Step size for each random walk step
-anchors = GenerateAnchors(5, 1.0)
-function ComputeStepsWithBounds(n::Int64, walker::Vector2)
+function ComputeStepsWithBounds!(n::Int64, walker::Vector2)
     # Set up default bounds #
-    upperRight = Vector2(walker.x, walker.y)
-    lowerLeft = Vector2(walker.x, walker.y)
-    # max_x = walker.x
-    # min_x = walker.x
-    # max_y = walker.y
-    # min_y = walker.y
+    upperRight = Vector2(walker.x, walker.y) # (maxX, maxY)
+    lowerLeft = Vector2(walker.x, walker.y)  # (minX, minY)
 
     # Create our array of locations visited by our walker #
     steps = Array{Vector2}(undef, n + 1)
@@ -36,10 +30,9 @@ function ComputeStepsWithBounds(n::Int64, walker::Vector2)
 
     # Do N steps, tracking the X/Y bounds for heatmap purposes #
     for i in 2:n+1
-        # Compute the step & check the bounds #
+        # Choose an anchor and take a step toward it #
         target = ChooseRandomAnchor(anchors)
-        stepVector = ComputeStepToward(walker, target, stepSize)
-        walker += stepVector
+        walker += ComputeStepToward(walker, target, stepSize)
         steps[i] = Vector2(walker.x, walker.y)
 
         ## Update bounds ##
@@ -62,11 +55,7 @@ function ComputeStepsWithBounds(n::Int64, walker::Vector2)
         end 
     end
 
-    # We're done here. Walker has been modified.
-    # Bounds are described by upperRight and lowerLeft, which need to be returned
-    # We also created an array of steps, which might need to be returned
-    # We might want to have the steps array be passed in as an argument instead
-    # TODO: Decide on return signature
-    return steps
+    # Returning steps + tuple of bounds, leaving to end user to unpack #
+    return (steps, (upperRight, lowerLeft))
 end
 export ComputeStepsWithBounds

@@ -29,4 +29,9 @@ step != -1 * (target - source) && println("ComputeStepToward test 4 failed: Step
 ### End tests for ComputeStepToward ###
 
 ### Tests for ComputeStepsWithBounds ###
+stepCount = 100
+numAnchors = 4
+walker = Vector2(0.0, 0.0)
+steps, bounds = ComputeStepsWithBounds(numAnchors, walker)
+
 ### End tests for ComputeStepsWithBounds ###

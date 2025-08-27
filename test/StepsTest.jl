@@ -28,12 +28,6 @@
 end
 ### End tests for ComputeStepToward ###
 
-
-### Begin tests for ComputeSteps ###
-# TODO: Learn how to mock ChooseRandomAnchor for more controlled tests
-### End tests for ComputeSteps ###
-
-
 ### Begin tests for ComputeStepBounds ###
 @testset verbose=true "Testing ComputeStepBounds" begin
     @testset "ComputeStepBounds with various step patterns" begin
@@ -78,3 +72,5 @@ end
     end
 end
 ### End tests for ComputeStepBounds ###
+
+# TODO: Decide if you're smart enough to write a test for ComputeSteps using Pretend.

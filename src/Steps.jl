@@ -16,7 +16,7 @@ function ComputeStepToward(source::Vector2, target::Vector2, stepSize::Float64)
 end
 export ComputeStepToward
 
-function ComputeStepsWithBounds(n::Int64, startLocation::Vector2, anchors:: Vector{Vector2}, stepSize::Float64 = 0.1)
+function ComputeStepsWithBounds(n::Int64, anchors:: Vector{Vector2}, startLocation::Vector2 = Vector2(0.0,0.0), stepSize::Float64 = 0.5)
     # Set up default bounds #
     upperRight = startLocation # (maxX, maxY)
     lowerLeft = startLocation  # (minX, minY)

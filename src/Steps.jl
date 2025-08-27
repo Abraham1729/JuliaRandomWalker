@@ -1,4 +1,9 @@
-function ComputeStepToward(source::Vector2, target::Vector2, stepSize::Float64)
+function ComputeStepToward(
+    source::Vector2, 
+    target::Vector2, 
+    stepSize::Float64
+    )
+
     # Calculate direction vector
     dir_x = target.x - source.x
     dir_y = target.y - source.y
@@ -16,10 +21,12 @@ function ComputeStepToward(source::Vector2, target::Vector2, stepSize::Float64)
 end
 export ComputeStepToward
 
-function ComputeStepsWithBounds(n::Int64, anchors:: Vector{Vector2}, startLocation::Vector2 = Vector2(0.0,0.0), stepSize::Float64 = 0.5)
-    # Set up default bounds #
-    upperRight = startLocation # (maxX, maxY)
-    lowerLeft = startLocation  # (minX, minY)
+function ComputeSteps(
+    n::Int64, 
+    anchors:: Vector{Vector2}, 
+    startLocation::Vector2 = Vector2(0.0,0.0), 
+    stepSize::Float64 = 0.5
+    )
 
     # Create our array of locations visited by our walker #
     steps = Array{Vector2}(undef, n + 1)
@@ -30,17 +37,32 @@ function ComputeStepsWithBounds(n::Int64, anchors:: Vector{Vector2}, startLocati
         # Choose an anchor and take a step toward it #
         target = ChooseRandomAnchor(anchors)
         steps[i] = steps[i-1] += ComputeStepToward(steps[i-1], target, stepSize)
-
-        # Update X bounds as needed #
-        upperRight.x < steps[i].x && (upperRight.x = steps[i].x)
-        lowerLeft.x > steps[i].x && (lowerLeft.x = steps[i].x)
-
-        # Update Y bounds as needed #
-        upperRight.y < steps[i].y && (upperRight.y = steps[i].y)
-        lowerLeft.y > steps[i].y && (lowerLeft.y = steps[i].y)
     end
 
-    # Returning steps + tuple of bounds, leaving to end user to unpack #
-    return (steps, (upperRight, lowerLeft))
+    # Return generated steps array #
+    return steps
 end
-export ComputeStepsWithBounds
+export ComputeSteps
+
+function ComputeStepBounds(
+    steps::Vector{Vector2}
+    )
+
+    # Initialize bounds using the first step
+    upperRight = steps[1] # (maxX, maxY)
+    lowerLeft = steps[1]  # (minX, minY)
+
+    # Loop through all steps to find bounds
+    for step in steps
+        # Update X bounds as needed #
+        upperRight.x < step.x && (upperRight.x = step.x)
+        lowerLeft.x > step.x && (lowerLeft.x = step.x)
+
+        # Update Y bounds as needed #
+        upperRight.y < step.y && (upperRight.y = step.y)
+        lowerLeft.y > step.y && (lowerLeft.y = step.y)
+    end
+
+    return (upperRight, lowerLeft)
+end
+export ComputeStepBounds

@@ -4,4 +4,4 @@ include("Vector2.jl")
 include("Anchors.jl")
 include("Steps.jl")
 
-end # module RandomWalker
+end # module JuliaRandomWalker

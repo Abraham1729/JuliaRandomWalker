@@ -17,7 +17,7 @@ function ComputeStepToward(source::Vector2, target::Vector2, stepSize::Float64)
     # Update source position
     return Vector2(step_x, step_y)
 end
-export StepToward
+export ComputeStepToward
 
 function ComputeStepsWithBounds!(n::Int64, walker::Vector2)
     # Set up default bounds #
@@ -32,27 +32,15 @@ function ComputeStepsWithBounds!(n::Int64, walker::Vector2)
     for i in 2:n+1
         # Choose an anchor and take a step toward it #
         target = ChooseRandomAnchor(anchors)
-        walker += ComputeStepToward(walker, target, stepSize)
-        steps[i] = Vector2(walker.x, walker.y)
+        steps[i] = walker += ComputeStepToward(walker, target, stepSize)
 
-        ## Update bounds ##
-        # Update X bounds #
-        if upperRight.x < walker.x
-            upperRight.x = walker.x
-        else
-            if lowerLeft.x > walker.x
-                lowerLeft.x = walker.x
-            end
-        end
+        # Update X bounds as needed #
+        upperRight.x < walker.x && upperRight.x = walker.x
+        lowerLeft.x > walker.x && lowerLeft.x = walker.x
 
-        # Update Y bounds #
-        if upperRight.y < walker.y
-            upperRight.y = walker.y
-        else 
-            if lowerLeft.y > walker.y
-                lowerLeft.y = walker.y
-            end
-        end 
+        # Update Y bounds as needed #
+        upperRight.y < walker.y && upperRight.y = walker.y
+        lowerLeft.y > walker.y && lowerLeft.y = walker.y
     end
 
     # Returning steps + tuple of bounds, leaving to end user to unpack #

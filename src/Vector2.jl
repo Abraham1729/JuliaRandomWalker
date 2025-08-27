@@ -1,37 +1,29 @@
-mutable struct Vector2
-    x::Float64
-    y::Float64
-end
+using StaticArrays
 export Vector2
 
-function Base.:+(p1::Vector2, p2::Vector2)
-    return Vector2(p1.x + p2.x, p1.y + p2.y)
+mutable struct Vector2
+    data:: SVector{2, Float64}
 end
 
-function Base.:-(p1::Vector2, p2::Vector2)
-    return Vector2(p1.x - p2.x, p1.y - p2.y)
-end
+# Constructors #
+Vector2(x::Real, y::Real) = Vector2(SVector(Float64(x), Float64(y)))
+Vector2(v::AbstractVector{<:Real}) = Vector2(SVector{2,Float64}(v))
 
-function Base.:(==)(p1::Vector2, p2::Vector2)
-    return p1.x == p2.x && p1.y == p2.y
-end
+# Member access #
+Base.getindex(v::Vector2, i::Int) = v.data[i]
+Base.getproperty(v::Vector2, s::Symbol) =
+    s === :x ? v.data[1] :
+    s === :y ? v.data[2] :
+    getfield(v, s)
 
-function Base.:*(scalar::Float64, p::Vector2)
-    return Vector2(scalar * p.x, scalar * p.y)
-end
+# Equality checks #
+Base.:(==)(v1::Vector2, v2::Vector2) = v1.x == v2.x && v1.y == v2.y
+Base.isapprox(v1::Vector2, v2::Vector2; atol=1e-8) = isapprox(v1.x, v2.x, atol=atol) && isapprox(v1.y, v2.y, atol=atol)
 
-function Base.:*(p::Vector2, scalar::Float64)
-    return Vector2(scalar * p.x, scalar * p.y)
-end
 
-function Base.:*(scalar::Int64, p::Vector2)
-    return Vector2(scalar * p.x, scalar * p.y)
-end
-
-function Base.:*(p::Vector2, scalar::Int64)
-    return Vector2(scalar * p.x, scalar * p.y)
-end
-
-function Base.isapprox(p1::Vector2, p2::Vector2; atol=1e-8)
-    return isapprox(p1.x, p2.x, atol=atol) && isapprox(p1.y, p2.y, atol=atol)
-end
+# Scalar Arithmetic #
+Base.:*(a::Real, v::Vector2) = Vector2(a * v.x, a * v.y)
+Base.:*(v::Vector2, a::Real) = Vector2(a * v.x, a * v.y)
+Base.:/(v::Vector2, a::Real) = Vector2(v.x / a, v.y / a)
+Base.:+(v1::Vector2, v2::Vector2) = Vector2(v1.x + v2.x, v1.y + v2.y)
+Base.:-(v1::Vector2, v2::Vector2) = Vector2(v1.x - v2.x, v1.y - v2.y)

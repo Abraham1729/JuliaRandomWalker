@@ -32,3 +32,7 @@ Base.:*(v::Vector2, a::Real) = Vector2(a * v.x, a * v.y)
 Base.:/(v::Vector2, a::Real) = Vector2(v.x / a, v.y / a)
 Base.:+(v1::Vector2, v2::Vector2) = Vector2(v1.x + v2.x, v1.y + v2.y)
 Base.:-(v1::Vector2, v2::Vector2) = Vector2(v1.x - v2.x, v1.y - v2.y)
+
+
+# Length computations (Shouldn't need to do this, but broadcasting seems to want it) #
+Base.length(::Vector2) = 2

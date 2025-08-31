@@ -29,14 +29,14 @@ function ComputeSteps(
     )
 
     # Create our array of locations visited by our walker #
-    steps = Array{Vector2}(undef, n + 1)
+    steps = Array{Vector2}(undef, n)
     steps[1] = startLocation
 
     # Do N steps, tracking the X/Y bounds for heatmap purposes #
     for i in 2:length(steps)
         # Choose an anchor and take a step toward it #
         target = ChooseRandomAnchor(anchors)
-        steps[i] = steps[i-1] += ComputeStepToward(steps[i-1], target, stepSize)
+        steps[i] = steps[i-1] + ComputeStepToward(steps[i-1], target, stepSize)
     end
 
     # Return generated steps array #
@@ -49,18 +49,18 @@ function ComputeStepBounds(
     )
 
     # Initialize bounds using the first step
-    upperRight = steps[1] # (maxX, maxY)
-    lowerLeft = steps[1]  # (minX, minY)
+    upperRight = deepcopy(steps[1]) # (maxX, maxY)
+    lowerLeft = deepcopy(steps[1])  # (minX, minY)
 
     # Loop through all steps to find bounds
     for step in steps
         # Update X bounds as needed #
-        upperRight.x < step.x && (upperRight.x = step.x)
-        lowerLeft.x > step.x && (lowerLeft.x = step.x)
+        (upperRight.x < step.x) && (upperRight.x = step.x)
+        (lowerLeft.x > step.x) && (lowerLeft.x = step.x)
 
         # Update Y bounds as needed #
-        upperRight.y < step.y && (upperRight.y = step.y)
-        lowerLeft.y > step.y && (lowerLeft.y = step.y)
+        (upperRight.y < step.y) && (upperRight.y = step.y)
+        (lowerLeft.y > step.y) && (lowerLeft.y = step.y)
     end
 
     return (upperRight, lowerLeft)

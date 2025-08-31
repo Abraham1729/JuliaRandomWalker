@@ -13,15 +13,14 @@ function Run(
     
     # Get bounds of sim #
     upperRight, lowerLeft = ComputeStepBounds(steps)
-    dx = upperRight.x - lowerLeft.x
-    dy = upperRight.y - lowerLeft.y
-    worldSize = Vector2(dx, dy)
+    worldX = upperRight.x - lowerLeft.x
+    worldY = upperRight.y - lowerLeft.y
     
     # Get bounds of screen #
     screenDims = Vector2(resX, resY)
     
     # Get conversion factor as Vector2 # 
-    screenScalingFactor = Vector2(screenDims.x / worldSize.x, screenDims.y / worldSize.y)
+    screenScalingFactor = Vector2(screenDims.x / worldX, screenDims.y / worldY)
     epsilon = 0.0001
     
     # Compute visted pixels, populate screen #

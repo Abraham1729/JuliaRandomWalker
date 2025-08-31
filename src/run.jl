@@ -1,9 +1,9 @@
 function Run(
     num_steps::Int64, 
     num_anchors::Int64 = 3, 
-    anchor_distance::Float64 = 10.0,
+    anchor_distance::Real = 10.0,
     startLocation::Vector2 = Vector2(0.0,0.0), 
-    stepSize::Float64 = 0.5,
+    stepSize::Real = 0.5,
     resX::Int64 = 1000,
     resY::Int64 = 1000,
     )

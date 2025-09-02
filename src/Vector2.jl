@@ -1,7 +1,7 @@
 using StaticArrays
 export Vector2
 
-mutable struct Vector2
+struct Vector2
     data:: SVector{2, Float64}
 end
 
@@ -15,11 +15,6 @@ Base.getproperty(v::Vector2, s::Symbol) =
     s === :x ? v.data[1] :
     s === :y ? v.data[2] :
     getfield(v, s)
-
-Base.setproperty!(v::Vector2, s::Symbol, val) =
-    s === :x ? (v.data = SVector(val, v.y)) :
-    s === :y ? (v.data = SVector(v.x, val)) :
-    setfield!(v, s, val)
 
 # Equality checks #
 Base.:(==)(v1::Vector2, v2::Vector2) = v1.x == v2.x && v1.y == v2.y

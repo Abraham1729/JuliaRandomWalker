@@ -48,21 +48,23 @@ function ComputeStepBounds(
     steps::Vector{Vector2}
     )
 
-    # Initialize bounds using the first step
-    upperRight = deepcopy(steps[1]) # (maxX, maxY)
-    lowerLeft = deepcopy(steps[1])  # (minX, minY)
+    # Replacing my Vec2s with floats for better performance #
+    maxX = steps[1].x
+    minX = steps[1].x
+    maxY = steps[1].y
+    minY = steps[1].y
 
     # Loop through all steps to find bounds
     for step in steps
         # Update X bounds as needed #
-        (upperRight.x < step.x) && (upperRight.x = step.x)
-        (lowerLeft.x > step.x) && (lowerLeft.x = step.x)
+        (maxX < step.x) && (maxX = step.x)
+        (minX > step.x) && (minX = step.x)
 
         # Update Y bounds as needed #
-        (upperRight.y < step.y) && (upperRight.y = step.y)
-        (lowerLeft.y > step.y) && (lowerLeft.y = step.y)
+        (maxY < step.y) && (maxY = step.y)
+        (minY > step.y) && (minY = step.y)
     end
 
-    return (upperRight, lowerLeft)
+    return (Vector2(maxX, maxY), Vector2(minX, minY))
 end
 export ComputeStepBounds
